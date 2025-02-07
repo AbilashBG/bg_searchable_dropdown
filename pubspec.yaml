@@ -1,6 +1,6 @@
 name: bg_searchable_dropdown
 description: "This package gives customized options in searchable dropdown."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/AbilashBG/bg_searchable_dropdown.git
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-bg_searchable_dropdown: ^0.0.1
+bg_searchable_dropdown: ^0.0.2
 
 dev_dependencies:
   flutter_test:
