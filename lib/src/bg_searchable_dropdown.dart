@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
 
+/// A customizable searchable dropdown widget for Flutter.
 class BGSearchableDropDown extends StatefulWidget {
+  /// The list of items to display in the dropdown.
   final List<String> items;
+
+  /// The hint text to display when no item is selected.
   final String hint;
+
+  /// The text to display for the clear option.
   final String clearOptionText;
+
+  /// A callback function that is called when the selected item changes.
   final Function(String?) onChanged;
+
+  /// The border color of the dropdown.
   final Color borderColor;
+
+  /// The border radius of the dropdown.
   final double borderRadius;
+
+  /// The maximum height of the dropdown list.
   final double dropdownHeight;
+
+  /// The icon to display in the dropdown.
   final Icon dropdownIcon;
+
+  /// Whether to show the clear button.
   final bool showClearButton;
+
+  /// The text style for the items in the dropdown.
   final TextStyle textStyle;
+
+  /// The label text for the search field.
   final String? searchLabelText;
 
+  /// Creates a new BGSearchableDropDown.
   const BGSearchableDropDown({
     super.key,
     required this.items,
@@ -76,18 +99,20 @@ class _BGSearchableDropDownState extends State<BGSearchableDropDown> {
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: Offset(0, size.height + 5),
+          offset: const Offset(0, 5), // Adjusted offset
           child: Material(
             elevation: 6.0,
             borderRadius: BorderRadius.circular(widget.borderRadius),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeInOut,
-              height: widget.dropdownHeight,
+              height: _filteredItems.isEmpty // Handle empty list height
+                  ? (widget.showClearButton ? 100 : 50) // Adjust as needed
+                  : widget.dropdownHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(widget.borderRadius),
                 color: Colors.white,
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black26,
                     blurRadius: 6,
@@ -126,13 +151,6 @@ class _BGSearchableDropDownState extends State<BGSearchableDropDown> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
-                        child: Text(
-                          widget.clearOptionText,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
                         onPressed: () {
                           setState(() {
                             selectedItem = null;
@@ -142,25 +160,37 @@ class _BGSearchableDropDownState extends State<BGSearchableDropDown> {
                           widget.onChanged(null);
                           _overlayEntry?.markNeedsBuild();
                         },
+                        child: Text(
+                          widget.clearOptionText,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
                     ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: _filteredItems.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(_filteredItems[index],
-                              style: widget.textStyle),
-                          onTap: () {
-                            setState(() {
-                              selectedItem = _filteredItems[index];
-                            });
-                            widget.onChanged(selectedItem!);
-                            _hideDropdown();
-                          },
-                        );
-                      },
-                    ),
+                    child: _filteredItems.isEmpty // Handle empty list
+                        ? Center(
+                            child:
+                                Text("No items found", style: widget.textStyle))
+                        : ListView.builder(
+                            itemCount: _filteredItems.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(_filteredItems[index],
+                                    style: widget.textStyle),
+                                onTap: () {
+                                  setState(() {
+                                    selectedItem = _filteredItems[index];
+                                  });
+                                  widget.onChanged(
+                                      selectedItem); // No need for ! as selectedItem is handled
+                                  _hideDropdown();
+                                },
+                              );
+                            },
+                          ),
                   ),
                 ],
               ),
