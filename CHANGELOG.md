@@ -1,4 +1,4 @@
-## [0.0.4] - 2025-05-10
+## [0.0.5] - 2025-05-10
 
 * **Enhancements:**
     * Improved handling of empty search results, displaying a "No items found" message.

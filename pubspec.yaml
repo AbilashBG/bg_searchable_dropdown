@@ -11,7 +11,7 @@ It's still relatively short and to the point, but it provides more useful inform
 
 Action-Oriented: 
 The use of offering features like... is a bit more active and engaging."
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/AbilashBG/bg_searchable_dropdown.git
 
 environment:
@@ -21,7 +21,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-bg_searchable_dropdown: ^0.0.4
+bg_searchable_dropdown: ^0.0.5
 
 dev_dependencies:
   flutter_test:
